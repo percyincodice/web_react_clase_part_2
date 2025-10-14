@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import {useNavigate} from 'react-router-dom';
-import axios from 'axios';
+import api from './Utils/api'
 
 function CreatePerson() {
     const navigate = useNavigate();
@@ -12,12 +12,13 @@ function CreatePerson() {
         e.preventDefault();
 
         try {
-            await axios.post("http://127.0.0.1:5000/api/person", 
+            await api.post("/person", 
                 {
                     "name": name,
                     "lastname": lastname,
                     "age": parseInt(age)
-                }
+                },
+                {headers: {'ngrok-skip-browser-warning': 'true', "Authorization": localStorage.getItem("token")}}
             );
 
             navigate('/');
@@ -44,7 +45,7 @@ function CreatePerson() {
                     <input type="number" className="form-control" value={age} onChange={(e) => setAge(e.target.value) }/>
                 </div>
                 <button type='submit' className="btn btn-success">Guardar</button>
-                <button className="btn btn-secondary ms-2" 
+                <button type='button' className="btn btn-secondary ms-2" 
                 onClick={() => navigate('/')}>Cancelar</button>
             </form>
         </div>

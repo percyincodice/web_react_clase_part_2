@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
-import axios from 'axios';
+import api from './Utils/api'
 
 function PersonDetail() {
     const { id } = useParams()
@@ -17,13 +17,14 @@ function PersonDetail() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        try {
-            await axios.put(`http://127.0.0.1:5000/api/person/${id}`, 
+        try {             
+            await api.put(`/person/${id}`,
                 {
                     "name": name,
                     "lastname": lastname,
                     "age": parseInt(age)
-                }
+                },
+                {headers: {'ngrok-skip-browser-warning': 'true', "Authorization": localStorage.getItem("token")}}
             );
 
             navigate('/');
@@ -38,7 +39,7 @@ function PersonDetail() {
         setError(false);
         setLoading(true);
 
-        axios.get(`http://127.0.0.1:5000/api/person/${id}`, {headers: {'ngrok-skip-browser-warning': 'true'}})
+        api.get(`/person/${id}`, {headers: {'ngrok-skip-browser-warning': 'true', "Authorization": localStorage.getItem("token")}})
         .then(response => {
             console.log("datos del api detalle", response.data);
             setName(response.data.name);
