@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import {useNavigate} from 'react-router-dom';
-import axios from 'axios';
+import api from './Util/api';
 
 function CreatePerson() {
     const navigate = useNavigate();
@@ -12,7 +12,7 @@ function CreatePerson() {
         e.preventDefault();
 
         try {
-            await axios.post("http://127.0.0.1:5000/api/person", 
+            await api.post("/person", 
                 {
                     "name": name,
                     "lastname": lastname,
