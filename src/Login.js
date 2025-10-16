@@ -21,7 +21,7 @@ function Login() {
       
       localStorage.setItem('token', res.data.token || 'dummy-token');
       Swal.fire('✅ Success', 'Login successful!', 'success');
-      navigate('/');
+      navigate('/person');
     } catch (error) {
       console.error(error);
       Swal.fire('❌ Error', 'Invalid username or password', 'error');

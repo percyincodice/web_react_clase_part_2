@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
-import api from './Utils/api'
+import api from '../Utils/api'
 
-function PersonDetail() {
+function UserDetail() {
     const { id } = useParams()
 
     const navigate = useNavigate();
-    const [name, setName] = useState('');
-    const [lastname, setLastname] = useState('');
-    const [age, setAge] = useState('');
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [role, setRole] = useState('');
 
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -18,33 +18,32 @@ function PersonDetail() {
         e.preventDefault();
 
         try {             
-            await api.put(`/person/${id}`,
+            await api.put(`/user/${id}`,
                 {
-                    "name": name,
-                    "lastname": lastname,
-                    "age": parseInt(age)
-                },
-                {headers: {'ngrok-skip-browser-warning': 'true', "Authorization": localStorage.getItem("token")}}
+                    "username": username,
+                    "password": password,
+                    "role": role
+                }                
             );
 
-            navigate('/');
+            navigate('/user');
         } catch (error) {
             console.log('Error', error);
             alert('Tuvo un error.')
         }
     }
 
-    const getPerson = () => {
+    const getUser = () => {
          console.log('id valor', id);
         setError(false);
         setLoading(true);
 
-        api.get(`/person/${id}`, {headers: {'ngrok-skip-browser-warning': 'true', "Authorization": localStorage.getItem("token")}})
+        api.get(`/user/${id}`)
         .then(response => {
             console.log("datos del api detalle", response.data);
-            setName(response.data.name);
-            setLastname(response.data.lastname);
-            setAge(response.data.age);
+            setUsername(response.data.username);
+            //setPassword(response.data.password);
+            setRole(response.data.role);
             
             setError(false);
             setLoading(false);
@@ -56,14 +55,14 @@ function PersonDetail() {
     }
 
     useEffect(() => {
-       getPerson();
+       getUser();
     }, [id])
 
     if (error) {
         return (
             <div className='container mt-5'>
                 <div className='alert alert-danger'>Error al cargar los datos.</div>
-                <button className='btn btn-warning' onClick={() => getPerson()}>Reintentar</button>
+                <button className='btn btn-warning' onClick={() => getUser()}>Reintentar</button>
             </div>
         )
     }
@@ -78,26 +77,26 @@ function PersonDetail() {
 
     return (
         <div className="container mt-5">
-            <h2>Editar Persona</h2>
+            <h2>Editar user</h2>
             <form onSubmit={handleSubmit}>
                 <div className="mb-3">
-                    <label className="form-label">Nombre</label>
-                    <input type="text" className="form-control" value={name} onChange={(e) => setName(e.target.value) } />
+                    <label className="form-label">Usuario</label>
+                    <input type="text" className="form-control" value={username} onChange={(e) => setUsername(e.target.value) } />
                 </div>
                 <div className="mb-3">
-                    <label className="form-label">Apellido</label>
-                    <input type="text" className="form-control" value={lastname} onChange={(e) => setLastname(e.target.value) }/>
+                    <label className="form-label">Contraseña</label>
+                    <input type="password" className="form-control" value={password} onChange={(e) => setPassword(e.target.value) }/>
                 </div>
                 <div className="mb-3">
-                    <label className="form-label">Edad</label>
-                    <input type="number" className="form-control" value={age} onChange={(e) => setAge(e.target.value) }/>
+                    <label className="form-label">Rol</label>
+                    <input type="text" className="form-control" value={role} onChange={(e) => setRole(e.target.value) }/>
                 </div>
                 <button type='submit' className="btn btn-success">Guardar</button>
                 <button className="btn btn-secondary ms-2" 
-                onClick={() => navigate('/')}>Cancelar</button>
+                onClick={() => navigate('/user')}>Cancelar</button>
             </form>
         </div>
     )
 }
 
-export default PersonDetail;
+export default UserDetail;

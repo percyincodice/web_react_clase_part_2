@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import {useNavigate} from 'react-router-dom';
-import api from './Utils/api'
+import api from '../Utils/api'
 
 function CreatePerson() {
     const navigate = useNavigate();
@@ -21,7 +21,7 @@ function CreatePerson() {
                 {headers: {'ngrok-skip-browser-warning': 'true', "Authorization": localStorage.getItem("token")}}
             );
 
-            navigate('/');
+            navigate('/person');
         } catch (error) {
             console.log('Error', error);
             alert('Tuvo un error.')
