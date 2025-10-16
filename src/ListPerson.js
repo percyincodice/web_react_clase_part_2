@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import {useNavigate} from 'react-router-dom';
-import axios from 'axios';
 import Swal from 'sweetalert2';
+import api from './Util/api'
 
 function ListPerson() {
     const [listPerson, setListPerson] = useState([]);
   const navigate = useNavigate();
 
   const listDataPerson = () => {
-    axios.get("http://127.0.0.1:5000/api/person", {headers: {'ngrok-skip-browser-warning': 'true'}})
+    api.get("/person")
     .then(response => {
       console.log("datos del api", response.data);
       setListPerson(response.data)
@@ -33,7 +33,7 @@ function ListPerson() {
     })
     .then((result) => {
       if (result.isConfirmed) {
-        axios.delete(`http://127.0.0.1:5000/api/person/${person_id}`, {headers: {'ngrok-skip-browser-warning': 'true'}})
+        api.delete(`/person/${person_id}`)
           .then(response => {
             console.log('eliminado!!!!')
             listDataPerson();
