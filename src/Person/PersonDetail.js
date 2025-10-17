@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
-import api from './Util/api'
+import api from '../Util/api'
 
 function PersonDetail() {
     const { id } = useParams()
@@ -26,7 +26,7 @@ function PersonDetail() {
                 }
             );
 
-            navigate('/');
+            navigate('/person');
         } catch (error) {
             console.log('Error', error);
             alert('Tuvo un error.')
@@ -93,7 +93,7 @@ function PersonDetail() {
                 </div>
                 <button type='submit' className="btn btn-success">Guardar</button>
                 <button className="btn btn-secondary ms-2" 
-                onClick={() => navigate('/')}>Cancelar</button>
+                onClick={() => navigate('/person')}>Cancelar</button>
             </form>
         </div>
     )

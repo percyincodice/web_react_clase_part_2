@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import {useNavigate} from 'react-router-dom';
-import api from './Util/api'
+import api from '../Util/api'
 function CreatePerson() {
     const navigate = useNavigate();
     const [name, setName] = useState('');
@@ -19,7 +19,7 @@ function CreatePerson() {
                 }
             );
 
-            navigate('/');
+            navigate('/person');
         } catch (error) {
             console.log('Error', error);
             alert('Tuvo un error.')
@@ -44,7 +44,7 @@ function CreatePerson() {
                 </div>
                 <button type='submit' className="btn btn-success">Guardar</button>
                 <button className="btn btn-secondary ms-2" 
-                onClick={() => navigate('/')}>Cancelar</button>
+                onClick={() => navigate('/person')}>Cancelar</button>
             </form>
         </div>
     )

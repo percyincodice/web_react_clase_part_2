@@ -1,28 +1,28 @@
 import { useEffect, useState } from 'react';
 import {useNavigate} from 'react-router-dom';
 import Swal from 'sweetalert2';
-import api from './Util/api'
+import api from '../Util/api'
 
-function ListPerson() {
-    const [listPerson, setListPerson] = useState([]);
+function ListUser() {
+    const [listUser, setListUser] = useState([]);
   const navigate = useNavigate();
 
-  const listDataPerson = () => {
-    api.get("/person")
+  const listDataUser = () => {
+    api.get("/user")
     .then(response => {
       console.log("datos del api", response.data);
-      setListPerson(response.data)
+      setListUser(response.data)
     }).catch(error => {
       console.error("No se puedo obtener datos", error);
     })
   }
 
   useEffect(() => {
-    listDataPerson();
+    listDataUser();
   }, []);
 
-  const handleDelete = (person_id) => {
-    console.log('eliminando', person_id);
+  const handleDelete = (user_id) => {
+    console.log('eliminando', user_id);
     Swal.fire({
       title: 'Estas seguro?',
       text: 'Esta accion eliminara el registro permanentemente!!!!',
@@ -33,14 +33,14 @@ function ListPerson() {
     })
     .then((result) => {
       if (result.isConfirmed) {
-        api.delete(`/person/${person_id}`)
+        api.delete(`/user/${user_id}`)
           .then(response => {
             console.log('eliminado!!!!')
-            listDataPerson();
-            Swal.fire('Eliminado', 'La persona esta eliminada', 'success');
+            listDataUser();
+            Swal.fire('Eliminado', 'El usuario esta eliminado', 'success');
           }).catch(error => {
             console.error("No se puedo eliminar el registro datos", error);
-            Swal.fire('Error', 'Error al intentar eliminar a la persona', 'error');
+            Swal.fire('Error', 'Error al intentar eliminar al usuario.', 'error');
           })
       }
     });
@@ -50,31 +50,29 @@ function ListPerson() {
   return (
     <div className='container mt-5'>
       <div className='d-flex justify-content-between align-items-center mb-3'>
-        <h2>Listado de personas</h2>
+        <h2>Listado de Usuarios</h2>
         <button className='btn btn-primary' 
-          onClick={() => navigate("/create")}
+          onClick={() => navigate("/user/create")}
           >
-            Crear persona
+            Crear usuario
         </button>
       </div>
       <table className='table table-striped table-bordered'>
           <thead className='table-dark'>
             <tr  >
-              <th>Nombre</th>
-              <th>Apellido</th>
-              <th>Edad</th>
+              <th>Usuario</th>
+              <th>Rol</th>              
               <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
-            {listPerson.map((person) => (
-               <tr key={person._id}>
-                <td>{person.name}</td>
-                <td>{person.lastname}</td>
-                <td>{person.age}</td>
+            {listUser.map((user) => (
+               <tr key={user._id}>
+                <td>{user.username}</td>
+                <td>{user.role}</td>
                 <td>
-                  <button className='btn btn-sm btn-warning' onClick={() => navigate(`/edit/${person._id}`)}>Editar</button>
-                  <button className='btn btn-sm btn-danger ms-2' onClick={() => handleDelete(person._id)}>Eliminar</button>
+                  <button className='btn btn-sm btn-warning' onClick={() => navigate(`/user/edit/${user._id}`)}>Editar</button>
+                  <button className='btn btn-sm btn-danger ms-2' onClick={() => handleDelete(user._id)}>Eliminar</button>
                 </td>
               </tr>
             ))}
@@ -85,4 +83,4 @@ function ListPerson() {
   );
 }
 
-export default ListPerson;
+export default ListUser;
